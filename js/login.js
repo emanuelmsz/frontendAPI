@@ -20,7 +20,8 @@ async function autenticar(e) {
   };
 
   // Define a URL da API que processará a autenticação
-  const url = "https://web-atv13-api-dnv.vercel.app/login";
+  const url = "https://13-web.vercel.app/login";
+  //const url = "https://web-atv13-api-dnv.vercel.app/login";
 
   try {
     // Envia uma requisição HTTP POST para a API com os dados do usuário
