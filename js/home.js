@@ -1,5 +1,19 @@
 import { verificarAutenticacao } from './autorizar.js';
 
+(async () => {
+  const autenticado = await verificarAutenticacao();
+
+  const overlay = document.getElementById('loading-overlay');
+
+  const conteudo = document.getElementById('conteudo-protegido');
+
+  if (autenticado) {
+    overlay.remove();
+
+    conteudo.style.display = 'block';
+  } 
+})();
+
 const urlBase = "https://web-atv13-api-dnv.vercel.app";
 
 const tabelaCorpo = document.getElementById("tabela-usuarios");
@@ -36,58 +50,3 @@ try {
 } catch (error) {
   console.error("Erro:", error);
 }
-
-
-tabelaCorpo.addEventListener('click', acao);
-
-function acao(e) {
-  if (e.target.classList.contains("botaoExcluir")) {
-    e.preventDefault();
-    const id = e.target.getAttribute("href");
-    excluirUsuario(id);
-  }
-}
-
-async function excluirUsuario(id) {
-  try {
-    const endpoint = `/usuario/${id}`;
-    const urlFinal = urlBase + endpoint;
-    const response = await fetch(urlFinal, {
-      method: 'DELETE'
-    });
-
-    if (!response.ok) {
-      throw new Error(`Erro na requisição: ${response.status}`);
-    }
-    
-    alert('Usuário excluido com sucesso!');
-
-  } catch (error) {
-    console.error(error);
-    alert('Usuário excluido não foi excluido!');
-  }
-  window.location.href = 'home.html';
-}
-
-// Função anônima auto-executável assíncrona.
-// O ()() garante que ela seja executada imediatamente ao carregar o script
-(async () => {
-  // Chama a função 'verificarAutenticacao' de forma assíncrona e espera seu resultado.
-  const autenticado = await verificarAutenticacao();
-
-  // Obtém o elemento HTML com o ID 'loading-overlay' (o overlay de carregamento da página)
-  const overlay = document.getElementById('loading-overlay');
-
-  // Obtém o elemento HTML com o ID 'conteudo-protegido' (o conteúdo restrito que deve ser exibido após autenticação)
-  const conteudo = document.getElementById('conteudo-protegido');
-
-  // Verifica se o usuário foi autenticado com sucesso
-  if (autenticado) {
-    // Remove o elemento 'overlay' do DOM, ocultando o texto "Carregando..." da tela
-    overlay.remove();
-
-    // Altera o estilo do elemento 'conteudo' para 'block', tornando o conteúdo visível
-    conteudo.style.display = 'block';
-  } 
-})();
-
